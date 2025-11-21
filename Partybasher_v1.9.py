@@ -115,7 +115,7 @@ def safe_int_from_bytes(data: bytes) -> int:
 
 def arx_hardening(byte: int, key: bytes, rounds: int = 16) -> int:
     """
-    Maximum security ARX with 64-bit operations and enhanced properties
+    Secure ARX with 64-bit operations and enhanced properties
     """
     if len(key) < 32:
         key = key * (32 // len(key) + 1)
@@ -166,7 +166,6 @@ def deterministic_permutation_from_chacha20(key: bytes, nonce: bytes, size: int 
     """
     Produce a deterministic permutation of range(size) using ChaCha20 as a CSPRNG
     and Fisher–Yates shuffle. key must be 32 bytes; nonce must be 16 bytes.
-    This is cryptographically strong (unlike MT19937) and deterministic for a given key+nonce.
     """
     if len(key) != 32:
         # pad or truncate to 32 bytes deterministically
@@ -205,8 +204,6 @@ def deterministic_permutation_from_chacha20(key: bytes, nonce: bytes, size: int 
 
 def generate_sboxes(key: bytes) -> Tuple[List[int], List[int]]:
     """Generate a deterministic, bijective S-box and its inverse from a 32-byte key.
-
-    Strategy:
       - Ensure key is 32 bytes (pad/truncate deterministically).
       - Use ChaCha20 with domain-separated seeds to produce two independent
         permutations (s_box_base and mapping_perm).
@@ -329,7 +326,7 @@ class PartybasherAlgorithm:
 
         # 4. Perform a cryptographically secure Fisher–Yates shuffle using the
         # ChaCha20 stream as entropy. This guarantees a proper permutation while
-        # ensuring the PRNG is cryptographically strong (unlike MT19937).
+        # ensuring the PRNG is cryptographically strong.
         num_bits = BLOCK_SIZE * 8  # 128 bits
         scramble_map = list(range(num_bits))
 
@@ -3667,4 +3664,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
